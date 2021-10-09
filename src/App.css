@@ -1,38 +1,279 @@
-.App {
-  text-align: center;
+/* ------------------------
+Fonts
+------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+/* ------------------------
+Variables
+------------------------ */
+:root {
+  --dark-violet: #7158e2;
+  --light-violet: #7d5fff;
+  --light-dark: #4b4b4b;
+  --dark: #3d3d3d;
+  --sunflower: #f1c40f;
+  --carrot: #e67e22;
+  --alizarin: #e74c3c;
+  --emerald: #27ae60;
+  --peter-silver: #3498db;
+  --white: #ffffff;
+  --white-alpha-40: rgba(255, 255, 255, 0.40);
+  --white-alpha-25: rgba(255, 255, 255, 0.25);
+  --dark-alpha-20: rgba(72, 84, 96, 0.20);
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* ------------------------
+Global Settings
+------------------------ */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  outline: none;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+::before,
+::after {
+  box-sizing: border-box;
 }
-
-.App-header {
-  background-color: #282c34;
+body {
   min-height: 100vh;
+  padding: 35px 15px;
+  font-weight: 300;
+  font-size: 16px;
+  background-image: linear-gradient(to bottom right, var(--light-violet), var(--dark-violet));
+  background-attachment: fixed;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Container */
+.flex-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* App Title */
+.app-title {
+  font-size: 50px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.app-description {
+  color: var(--white-alpha-40);
+  font-weight: 300;
+  text-transform: capitalize;
+  margin-bottom: 40px;
 }
 
-@keyframes App-logo-spin {
-  from {
+/* Loading */
+.load {
+  color: var(--white-alpha-40);
+  font-size: 60px;
+  animation: spin 1s linear infinite;
+}
+
+/* Card */
+.card {
+  position: relative;
+  max-width: 1400px;
+  margin: auto;
+  padding: 50px;
+  box-shadow: 10px 10px var(--dark-alpha-20);
+  background: var(--dark);
+}
+
+/* Button Section */
+.action {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+.action a {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition-property: background, border;
+  transition-duration: 0.5s;
+}
+
+.action a.add {
+  background: var(--emerald);
+  border: 1px solid var(--emerald);
+}
+
+.action a.close {
+  width: 50px;
+  height: 50px;
+  padding: none;
+  background: var(--alizarin);
+  border: 1px solid var(--alizarin);
+  border-radius: 50px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.action a:hover {
+  background: var(--light-dark);
+  border: 1px solid var(--light-dark);
+}
+
+.action.exit {
+  position: absolute;
+  top: -13px;
+  right: -13px;
+}
+
+/* Alert section */
+.alert {
+  margin-bottom: 20px;
+  padding: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--white);
+  background: var(--light-dark);
+  border: 1px solid var(--light-dark);
+  text-transform: capitalize;
+  transition: all 0.5s ease-in-out;
+}
+
+.alert.success {
+  color: var(--emerald);
+}
+
+.alert.fail {
+  color: var(--alizarin);
+}
+
+/* Table Section */
+.table {
+  font-size: 14px;
+  width: 100%;
+  border: 1px solid var(--light-dark);
+}
+
+.table th,
+.table td {
+  border-bottom: 1px solid var(--light-dark);
+  padding: 10px 8px;
+}
+.table tr:last-child td {
+  border-bottom: none !important;
+}
+
+.table .badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 5px;
+  border-radius: 10px;
+}
+
+.table td .badge-us {
+  color: var(--dark);
+  background: var(--sunflower);
+}
+
+.table td .badge-uk {
+  color: var(--white);
+  background: var(--carrot);
+}
+
+.table-action a {
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+
+.table-action span {
+  padding: 0 8px;
+  color: var(--white-alpha-25);
+}
+
+.table-action a:hover {
+  color: var(--light-dark);
+}
+
+.table-action a.edit {
+  color: var(--peter-silver);
+}
+
+.table-action a.delete {
+  color: var(--alizarin);
+}
+
+/* Form Section */
+.form {
+  display: flex;
+  flex-direction: column;
+  min-width: 400px;
+}
+
+.form .form-group {
+  margin-bottom: 15px;
+  justify-content: space-between;
+}
+
+.form .form-group:last-child {
+  margin-bottom: none;
+  margin-top: 10px;
+}
+
+.form .form-group label {
+  font-weight: 400;
+}
+
+.form .form-group .form-control,
+.form .form-group .form-control:active,
+.form .form-group .form-control:focus {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  padding: 8px;
+  background: var(--white-alpha-25);
+  border: 1px solid var(--light-dark);
+  color: var(--white);
+  width: 100%;
+}
+
+.form .form-group select option {
+  background: var(--light-dark);
+  border: 1px solid var(--light-dark);
+  border-top: none;
+  transition: all 0.5s ease-in-out;
+}
+
+.form .form-group .button {
+  width: 100%;
+  padding: 10px 15px;
+
+  color: var(--white);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+
+.form .form-group .button.add {
+  background: var(--emerald);
+  border: 1px solid var(--emerald);
+}
+
+.form .form-group .button.save {
+  background: var(--peter-silver);
+  border: 1px solid var(--peter-silver);
+}
+
+.form .form-group .button:hover {
+  background: var(--light-dark);
+  border: 1px solid var(--light-dark);
+}
+
+/* Animation */
+@keyframes spin {
+  0% {
     transform: rotate(0deg);
   }
-  to {
+  100% {
     transform: rotate(360deg);
   }
 }
