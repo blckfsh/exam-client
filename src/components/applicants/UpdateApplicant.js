@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import { api_4_applicants } from '../../../api/apis'
+import { api_4_applicants } from '../../api/apis'
 
 function UpdateApplicant(props) {
 

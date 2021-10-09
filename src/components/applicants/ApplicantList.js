@@ -5,7 +5,7 @@ import { FaEdit, FaTrash, FaUserPlus } from "react-icons/fa"
 import { MdClose } from "react-icons/md"
 import { AiOutlineLoading3Quarters } from "react-icons/ai"
 
-import { api_4_applicants } from '../../../api/apis'
+import { api_4_applicants } from '../../api/apis'
 import ApplicantForm from './ApplicantForm'
 import UpdateApplicant from './UpdateApplicant'
 
