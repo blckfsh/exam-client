@@ -23,6 +23,10 @@ function ApplicantList() {
   const [applicants, setApplicants] = useState([])
   const [info, setInfo] = useState([])
 
+  // states: for search function
+  const [search, setSearch] = useState('')
+  const [data, setData] = useState([])
+
   const getApplicants = () => {
     setView('list')
     setLoad(true)
@@ -31,6 +35,7 @@ function ApplicantList() {
       .then(res => res.json())
       .then(res => {
         setApplicants(res)
+        setData(res)
         setLoad(false)
       })
   }
@@ -62,18 +67,33 @@ function ApplicantList() {
       setApplicants(applicants.filter(applicant => applicant._id !== id))
   }
 
+  const handleSearch = (event) => {
+    setSearch(event)
+  }
+
   useEffect(() => {
     getApplicants()
   }, [])
 
   let content
-  let pager
+  let menu
 
   if (load) {
     content = <span><AiOutlineLoading3Quarters className="load" /></span>
   } else {
     if (view === 'list') {
-      pager = <div className="action"><a className="add" onClick={() => setView('add')}><FaUserPlus /> add applicant</a></div>
+      menu = <>
+        <div className="menu-left">
+          <input
+            type="text"
+            name="search-form"
+            className="search"
+            value={search}
+            onChange={(e) => handleSearch(e.target.value) }
+          />
+        </div>
+        <div className="action"><a className="add" onClick={() => setView('add')}><FaUserPlus /> add applicant</a></div>
+      </>
       content = <table className="table">
         <thead>
           <tr>
@@ -88,40 +108,44 @@ function ApplicantList() {
           </tr>
         </thead>
         <tbody>
-          {applicants.map((applicant) =>
-            <tr key={applicant._id}>
-              <td>{applicant.name}</td>
-              <td>{applicant.email}</td>
-              <td>{applicant.contact}</td>
-              <td>{applicant.role} - {applicant.level}</td>
-              <td><span className={applicant.department === 'Creatives - UK' ? "badge badge-uk" : "badge badge-us"}>{applicant.department}</span></td>
-              <td>{moment(applicant.date_applied).format('MMMM Do YYYY')}</td>
-              <td>{applicant.status}</td>
-              <td>
-                <div className="table-action">
-                  <a className="edit" onClick={() => viewInfo(applicant._id)}><FaEdit /></a>
-                  <span>|</span>
-                  <a className="delete" onClick={() => deleteInfo(applicant._id)}><FaTrash /></a>
-                </div>
-              </td>
-            </tr>
+          {applicants.filter(applicant => applicant.name.toLowerCase().includes(search.toLowerCase()))
+                     .sort((a, b) => a.date_applied < b.date_applied ? 1:-1)
+                     .map((applicant, index) =>
+                        <tr key={index}>
+                          <td>{applicant.name}</td>
+                          <td>{applicant.email}</td>
+                          <td>{applicant.contact}</td>
+                          <td>{applicant.role} - {applicant.level}</td>
+                          <td><span className={applicant.department === 'Creatives - UK' ? "badge badge-uk" : "badge badge-us"}>{applicant.department}</span></td>
+                          <td>{moment(applicant.date_applied).format('MMMM Do YYYY')}</td>
+                          <td>{applicant.status}</td>
+                          <td>
+                            <div className="table-action">
+                              <a className="edit" onClick={() => viewInfo(applicant._id)}><FaEdit /></a>
+                              <span>|</span>
+                              <a className="delete" onClick={() => deleteInfo(applicant._id)}><FaTrash /></a>
+                            </div>
+                          </td>
+                        </tr>
           )}
         </tbody>
       </table>
     } else if (view === 'info') {
-      pager = <div className="action exit"><a className="close" onClick={() => getApplicants()}><MdClose /></a></div>
+      menu = <div className="action exit"><a className="close" onClick={() => getApplicants()}><MdClose /></a></div>
       content = <div>
         <UpdateApplicant applicantId={applicantId} />
         </div>
     } else if (view === 'add') {
-      pager = <div className="action exit"><a className="close" onClick={() => getApplicants()}><MdClose /></a></div>
+      menu = <div className="action exit"><a className="close" onClick={() => getApplicants()}><MdClose /></a></div>
       content = <ApplicantForm />
     }
   }
 
   return (
     <>
-      <div className="menu">{pager}</div>
+      <div className="menu">
+        {menu}
+      </div>
       <div className="list">{content}</div>
     </>
   )

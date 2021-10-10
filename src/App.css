@@ -82,6 +82,31 @@ body {
   background: var(--dark);
 }
 
+/* Menu */
+.menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-left {
+  flex-grow: 2;
+}
+
+/* Search */
+.search,
+.search:active,
+.search:focus {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  padding: 8px;
+  background: var(--white-alpha-25);
+  border: 1px solid var(--light-dark);
+  color: var(--white);
+  width: 45%;
+}
+
 /* Button Section */
 .action {
   display: flex;
