@@ -54,30 +54,46 @@ function ApplicantForm() {
       status
     }
 
-    axios.post(applicants_api, applicant)
-      .then(res => {
-        if (res) {
-          setName('')
-          setEmail('')
-          setContact('')
-          setRole('cms developer')
-          setLevel('junior')
-          setDepartment('Creatives - UK')
-          setStatus('exam sent')
-          setAlert('success')
-        }
-      })
-      .catch(error =>
-        {
-          console.error(error.message)
-          setAlert('fail')
-        })
+    const info = {
+      name,
+      email
+    }
+
+    axios.get(applicants_api, info)
+         .then(res => {
+           if (!res) {
+             axios.post(applicants_api, applicant)
+               .then(res => {
+                 if (res) {
+                   setName('')
+                   setEmail('')
+                   setContact('')
+                   setRole('cms developer')
+                   setLevel('junior')
+                   setDepartment('Creatives - UK')
+                   setStatus('exam sent')
+                   setAlert('success')
+                 }
+               })
+               .catch(error =>
+                 {
+                   console.error(error.message)
+                   setAlert('fail')
+                 })
+           } else {
+             setAlert('existed')
+           }
+         })
+
+
 
   }
 
   return (
     <div>
-      { alert === 'success' ? <div className="alert success"><p>applicant added successfully</p></div> : alert === 'fail' ? <div className="alert fail"><p>failed to add the applicant</p></div> : '' }
+      { alert === 'success' ? <div className="alert success"><p>applicant added successfully</p></div> :
+        alert === 'fail' ? <div className="alert fail"><p>failed to add the applicant</p></div> :
+        alert === 'existed' ? <div className="alert fail"><p>applicant has already been added to the list.</p></div> :  '' }
       <form className="form" onSubmit={(e) => handleSubmit(e)}>
         <div className="form-group">
           <label>
