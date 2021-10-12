@@ -54,15 +54,15 @@ function ApplicantForm() {
       status
     }
 
-    const info = {
-      name,
-      email
-    }
-
-    axios.get(applicants_api, info)
+    axios.get(applicants_api + "info/" + name + "/" + email)
          .then(res => {
-           if (!res) {
+           const hit = res.data.length
+
+           if (hit > 0) {
+             setAlert('existed')
+           } else {
              axios.post(applicants_api, applicant)
+               // .subscribe(res => console.log(res))
                .then(res => {
                  if (res) {
                    setName('')
@@ -80,11 +80,8 @@ function ApplicantForm() {
                    console.error(error.message)
                    setAlert('fail')
                  })
-           } else {
-             setAlert('existed')
            }
          })
-
 
 
   }
