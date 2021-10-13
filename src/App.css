@@ -91,7 +91,14 @@ body {
 }
 
 .menu-left {
-  flex-grow: 2;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.menu-left label {
+  font-size: 12px;
+  color: var(--white-alpha-20);
 }
 
 /* Search */
@@ -104,7 +111,7 @@ body {
   background: var(--white-alpha-25);
   border: 1px solid var(--light-dark);
   color: var(--white);
-  width: 45%;
+  width: 30%;
 }
 
 /* Button Section */

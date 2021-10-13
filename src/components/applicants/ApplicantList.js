@@ -84,6 +84,7 @@ function ApplicantList() {
     if (view === 'list') {
       menu = <>
         <div className="menu-left">
+          <label>Search Name:</label>
           <input
             type="text"
             name="search-form"

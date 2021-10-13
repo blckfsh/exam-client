@@ -19,6 +19,7 @@ function ApplicantForm() {
 
   // states: confirmation
   const [alert, setAlert] = useState('')
+  const [exam, setExam] = useState(false)
 
   // list of roles
   const rolesArray = [
@@ -54,6 +55,13 @@ function ApplicantForm() {
       status
     }
 
+    const sendExam = {
+      email,
+      role,
+      level,
+      department
+    }
+
     axios.get(applicants_api + "info/" + name + "/" + email)
          .then(res => {
            const hit = res.data.length
@@ -62,25 +70,26 @@ function ApplicantForm() {
              setAlert('existed')
            } else {
              axios.post(applicants_api, applicant)
-               // .subscribe(res => console.log(res))
-               .then(res => {
-                 if (res) {
-                   setName('')
-                   setEmail('')
-                   setContact('')
-                   setRole('cms developer')
-                   setLevel('junior')
-                   setDepartment('Creatives - UK')
-                   setStatus('exam sent')
-                   setAlert('success')
-                 }
-               })
-               .catch(error =>
-                 {
-                   console.error(error.message)
-                   setAlert('fail')
-                 })
-           }
+                  .then((res) => {
+                       axios.post(applicants_api + "mail", sendExam)
+                            .then(res => {
+                              setName('')
+                              setEmail('')
+                              setContact('')
+                              setRole('cms developer')
+                              setLevel('junior')
+                              setDepartment('Creatives - UK')
+                              setStatus('exam sent')
+                              setAlert('success')
+                            })
+                            .catch(error => console.log(error.message))
+                  })
+                  .catch(error =>
+                   {
+                     console.error(error.message)
+                     setAlert('fail')
+                   })
+            }
          })
 
 
