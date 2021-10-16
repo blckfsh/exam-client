@@ -3,6 +3,15 @@
 <br>
 <p>NOTE: please run <a href="#">npm install</a> after cloning</p>
 <br>
+<strong>v1.1</strong>&nbsp;<small>October 16, 2021</small>
+<p>Summary:</p>
+<ul>
+  <li>Added Applicant Information</li>
+  <li>Added Exam Evaluation</li>
+  <li>Configure Exam Evaluation rating</li>
+</ul>
+<br>
+<br>
 <strong>v1.0</strong>&nbsp;<small>October 13, 2021</small>
 <p>Summary:</p>
 <ul>

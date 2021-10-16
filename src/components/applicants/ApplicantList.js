@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import moment from 'moment'
-import { FaEdit, FaTrash, FaUserPlus } from "react-icons/fa"
+import { FaEye, FaEdit, FaTrash, FaUserPlus } from "react-icons/fa"
 import { MdClose } from "react-icons/md"
 import { AiOutlineLoading3Quarters } from "react-icons/ai"
 
 import { api_4_applicants } from '../../api/apis'
+import ApplicantInfo from './ApplicantInfo'
 import ApplicantForm from './ApplicantForm'
 import UpdateApplicant from './UpdateApplicant'
 
@@ -59,6 +60,13 @@ function ApplicantList() {
     getApplicantById(id)
   }
 
+  const updateInfo = (id) => {
+    setView('update')
+
+    setApplicantId(id)
+    getApplicantById(id)
+  }
+
   const deleteInfo = (id) => {
     axios.delete(applicants_api + id)
       .then(res => console.log(res.data))
@@ -101,8 +109,6 @@ function ApplicantList() {
             <th>Name</th>
             <th>Email</th>
             <th>Contact</th>
-            <th>Role & Level</th>
-            <th>Department</th>
             <th>Date Applied</th>
             <th>Status</th>
             <th> </th>
@@ -116,13 +122,13 @@ function ApplicantList() {
                           <td>{applicant.name}</td>
                           <td>{applicant.email}</td>
                           <td>{applicant.contact}</td>
-                          <td>{applicant.role} - {applicant.level}</td>
-                          <td><span className={applicant.department === 'Creatives - UK' ? "badge badge-uk" : "badge badge-us"}>{applicant.department}</span></td>
                           <td>{moment(applicant.date_applied).format('MMMM Do YYYY')}</td>
                           <td>{applicant.status}</td>
                           <td>
                             <div className="table-action">
-                              <a className="edit" onClick={() => viewInfo(applicant._id)}><FaEdit /></a>
+                              <a className="view" onClick={() => viewInfo(applicant._id)}><FaEye /></a>
+                              <span>|</span>
+                              <a className="edit" onClick={() => updateInfo(applicant._id)}><FaEdit /></a>
                               <span>|</span>
                               <a className="delete" onClick={() => deleteInfo(applicant._id)}><FaTrash /></a>
                             </div>
@@ -131,7 +137,7 @@ function ApplicantList() {
           )}
         </tbody>
       </table>
-    } else if (view === 'info') {
+    } else if (view === 'update') {
       menu = <div className="action exit"><a className="close" onClick={() => getApplicants()}><MdClose /></a></div>
       content = <div>
         <UpdateApplicant applicantId={applicantId} />
@@ -139,6 +145,9 @@ function ApplicantList() {
     } else if (view === 'add') {
       menu = <div className="action exit"><a className="close" onClick={() => getApplicants()}><MdClose /></a></div>
       content = <ApplicantForm />
+    } else if (view === 'info') {
+      menu = <div className="action exit"><a className="close" onClick={() => getApplicants()}><MdClose /></a></div>
+      content = <ApplicantInfo applicantId={applicantId} />
     }
   }
 
