@@ -23,6 +23,9 @@ function ApplicantInfo(props) {
   // connect to finals_api
   const finals_api = api_4_final_interview
 
+  // states: confirmation
+  const [alert, setAlert] = useState('')
+
   // states: checker
   const [exchecker, setExchecker] = useState(false)
   const [examConfirmation, setExamConfirmation] = useState(false)
@@ -87,6 +90,27 @@ function ApplicantInfo(props) {
     'N/A',
     'No Show'
   ]
+
+  const emailExam = (event) => {
+    event.preventDefault()
+
+    const sendExam = {
+      email,
+      role,
+      level,
+      department
+    }
+
+    axios.post(applicants_api + "mail", sendExam)
+         .then(res => {
+           console.log('sending exam')
+           setAlert('success')
+           setTimeout(() => {
+             setAlert('')
+           }, 5000)
+         })
+         .catch(error => console.log(error.message))
+  }
 
   const getApplicantById = (id) => {
     fetch(applicants_api + id)
@@ -339,13 +363,29 @@ function ApplicantInfo(props) {
       <div className="personal-details">
         <div className="profile"><FaUser /></div>
         <div className="information">
-          <h2>{name}
-            <span className="hired">
-              { examConfirmation === true && initialConfirmation === true && finalConfirmation === true ? <FaCheckCircle /> : '' }
-            </span>
-          </h2>
-          <p>{email}</p>
-          <button className="button resend">resend exam</button>
+          <div>
+            <h2>{name}
+              <span className="hired">
+                { examConfirmation === true && initialConfirmation === true && finalConfirmation === true ? <FaCheckCircle /> : '' }
+              </span>
+            </h2>
+            <p>{email}</p>
+            <div className="exam-content">
+              <button type="button" className="button resend" onClick={(e) => emailExam(e)}>resend exam</button>
+              {
+                alert === 'success' ? <div className="alert success"><p>exam has been emailed successfully!</p></div> : ''
+              }
+            </div>
+
+          </div>
+        </div>
+        <div className={ exam !== 0 && initial !== 0 && final !== 0 ? "overall active" : "overall" }>
+          <div>
+            {
+              exam !== 0 && initial !== 0 && final !== 0 ? Math.round((exam + initial + final) / 3) : ''
+            }
+          </div>
+          <span>overall</span>
         </div>
       </div>
       <div className="content">
