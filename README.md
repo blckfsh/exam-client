@@ -3,6 +3,14 @@
 <br>
 <p>NOTE: please run <a href="#">npm install</a> after cloning</p>
 <br>
+<strong>v1.2</strong>&nbsp;<small>October 17, 2021</small>
+<p>Summary:</p>
+<ul>
+  <li>Added Initial Interview</li>
+  <li>Added Final Interview</li>
+</ul>
+<br>
+<br>
 <strong>v1.1</strong>&nbsp;<small>October 16, 2021</small>
 <p>Summary:</p>
 <ul>

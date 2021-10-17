@@ -384,6 +384,12 @@ body {
   background: var(--carrot);
 }
 
+.hired {
+  color: var(--emerald);
+  font-size: 20px;
+  margin-left: 10px;
+}
+
 /* Exam Evaluation */
 .evaluation {
   display: flex;
