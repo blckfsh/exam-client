@@ -256,6 +256,16 @@ function ApplicantInfo(props) {
       .catch(error => console.log(error.message))
   }
 
+  const updateApplicantStatus = (value) => {
+    const applicant = {
+      status: value
+    }
+    
+    axios.patch(applicants_api + id, applicant)
+      .then(res => console.log('status updated'))
+      .catch(error => console.error(error.message))
+  }
+
   const handleExamEvaluation = (event) => {
     event.preventDefault()
 
@@ -270,7 +280,10 @@ function ApplicantInfo(props) {
 
     if (exchecker === false) {
       axios.post(exams_api, exam)
-        .then(res => console.log('exam evaluation added'))
+        .then(res => {
+          setStatus('initial interview')
+          updateApplicantStatus('initial interview')
+        })
         .then(res => setExchecker(true))
         .then(res => getExamEvaluation(id))
         .catch(error => console.log(error.message))
@@ -304,7 +317,10 @@ function ApplicantInfo(props) {
 
     if (inchecker === false) {
       axios.post(initials_api, initialInterview)
-        .then(res => console.log('initial interview added'))
+        .then(res => {
+          setStatus('final interview')
+          updateApplicantStatus('final interview')
+        })
         .then(res => setInchecker(true))
         .then(res => getInitialInterview(id))
         .catch(error => console.log(error.message))
@@ -335,7 +351,10 @@ function ApplicantInfo(props) {
 
     if (fichecker === false) {
       axios.post(finals_api, finalInterview)
-        .then(res => console.log('final interview added'))
+        .then(res => {
+          setStatus('completed')
+          updateApplicantStatus('completed')
+        })
         .then(res => setFichecker(true))
         .then(res => getFinalInterview(id))
         .catch(error => console.log(error.message))
@@ -393,7 +412,7 @@ function ApplicantInfo(props) {
         <ul>
           <li>Contact Number: {contact}</li>
           <li>Role: {role} - {level}</li>
-          <li>Department:<span className={department === "Creatives - UK" ? "badge badge-uk" : "badge badge-us"}>{department}</span></li>
+          <li>Department: {department}</li>
           <li>Date Applied: {moment(dateApplied).format("MMMM Do YYYY")}</li>
           <li>Status of Application: {status}</li>
         </ul>

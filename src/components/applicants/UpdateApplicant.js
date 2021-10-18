@@ -18,6 +18,7 @@ function UpdateApplicant(props) {
   const [role, setRole] = useState('')
   const [level, setLevel] = useState('')
   const [department, setDepartment] = useState('')
+  const [dateApplied, setDateApplied] = useState('')
   const [status, setStatus] = useState('')
 
   // states: confirmation
@@ -48,13 +49,14 @@ function UpdateApplicant(props) {
     fetch(applicants_api + id)
       .then(res => res.json())
       .then(res => {
-        let { name, email, contact, role, level, department, status } = res
+        let { name, email, contact, role, level, department, date_applied, status } = res
         setName(name)
         setEmail(email)
         setContact(contact)
         setRole(role)
         setLevel(level)
         setDepartment(department)
+        setDateApplied(date_applied)
         setStatus(status)
       })
   }
@@ -69,6 +71,7 @@ function UpdateApplicant(props) {
       role,
       level,
       department,
+      date_applied: dateApplied,
       status
     }
 
@@ -76,6 +79,9 @@ function UpdateApplicant(props) {
       .then(res => {
         if (res) {
           setAlert('success')
+          setTimeout(() => {
+            setAlert(false)
+          }, 5000)
         }
       })
       .catch(error => {
@@ -138,6 +144,11 @@ function UpdateApplicant(props) {
                 <option key={department}>{department}</option>
               )}
             </select>
+          </label>
+        </div>
+        <div className="form-group">
+          <label>Schedule
+            <input className="form-control" type="datetime-local" name="dateApplied" value={dateApplied} onChange={(e) => setDateApplied(e.target.value)} />
           </label>
         </div>
         <div className="form-group">

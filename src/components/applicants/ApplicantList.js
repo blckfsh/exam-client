@@ -123,7 +123,20 @@ function ApplicantList() {
                           <td>{applicant.email}</td>
                           <td>{applicant.contact}</td>
                           <td>{moment(applicant.date_applied).format('MMMM Do YYYY')}</td>
-                          <td>{applicant.status}</td>
+                          <td>
+                            <span
+                                className={
+                                            applicant.status === "screening" ? "badge badge-screening" :
+                                            applicant.status === "exam" ? "badge badge-in-progress" :
+                                            applicant.status === "initial interview" ? "badge badge-in-progress" :
+                                            applicant.status === "final interview" ? "badge badge-in-progress" :
+                                            applicant.status === "completed" ? "badge badge-completed" :
+                                            "badge badge-failed"
+                                          }
+                             >
+                              {applicant.status}
+                             </span>
+                          </td>
                           <td>
                             <div className="table-action">
                               <a className="view" onClick={() => viewInfo(applicant._id)}><FaEye /></a>

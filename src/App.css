@@ -161,6 +161,35 @@ body {
   right: -13px;
 }
 
+/* Badge Section */
+.badge {
+  margin-left: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 30px;
+}
+
+.badge-screening {
+  color: var(--dark);
+  background: var(--sunflower);
+}
+
+.badge-in-progress {
+  color: var(--white);
+  background: var(--carrot);
+}
+
+.badge-completed {
+  color: var(--white);
+  background: var(--emerald);
+}
+
+.badge-failed {
+  color: var(--white);
+  background: var(--alizarin);
+}
+
 /* Alert section */
 .alert {
   margin-bottom: 20px;
@@ -171,7 +200,6 @@ body {
   background: var(--light-dark);
   border: 1px solid var(--light-dark);
   text-transform: capitalize;
-  /* transition: all 0.5s ease-in-out; */
   animation: fadeAlert 5s ease-in-out forwards;
 }
 
@@ -410,24 +438,6 @@ body {
   flex: 1 1 40%;
   margin: 10px 10px 10px 0;
   list-style: none;
-}
-
-.badge {
-  margin-left: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 30px;
-}
-
-.badge-us {
-  color: var(--dark);
-  background: var(--sunflower);
-}
-
-.badge-uk {
-  color: var(--white);
-  background: var(--carrot);
 }
 
 .hired {

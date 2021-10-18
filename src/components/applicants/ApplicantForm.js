@@ -15,7 +15,7 @@ function ApplicantForm() {
   const [role, setRole] = useState('cms developer')
   const [level, setLevel] = useState('junior')
   const [department, setDepartment] = useState('Creatives - UK')
-  const [status, setStatus] = useState('exam sent')
+  const [status, setStatus] = useState('in progress')
 
   // states: confirmation
   const [alert, setAlert] = useState('')
@@ -79,7 +79,7 @@ function ApplicantForm() {
                               setRole('cms developer')
                               setLevel('junior')
                               setDepartment('Creatives - UK')
-                              setStatus('exam sent')
+                              setStatus('in progress')
                               setAlert('success')
                             })
                             .catch(error => console.log(error.message))
