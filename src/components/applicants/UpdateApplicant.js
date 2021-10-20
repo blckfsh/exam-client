@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import DatePicker from 'react-datepicker';
+import moment from 'moment'
 import axios from 'axios'
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 import { api_4_applicants } from '../../api/apis'
 
@@ -11,6 +15,9 @@ function UpdateApplicant(props) {
   // connect to applicants_api
   const applicants_api = api_4_applicants
 
+  // states: fro DatePicker
+  // const [dpDateApplied = setDpDateApplied] = useState(new Date())
+
   // states: for api-related
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -18,7 +25,7 @@ function UpdateApplicant(props) {
   const [role, setRole] = useState('')
   const [level, setLevel] = useState('')
   const [department, setDepartment] = useState('')
-  const [dateApplied, setDateApplied] = useState('')
+  const [dateApplied, setDateApplied] = useState(new Date())
   const [status, setStatus] = useState('')
 
   // states: confirmation
@@ -56,7 +63,7 @@ function UpdateApplicant(props) {
         setRole(role)
         setLevel(level)
         setDepartment(department)
-        setDateApplied(date_applied)
+        setDateApplied(moment(date_applied).toDate())
         setStatus(status)
       })
   }
@@ -71,9 +78,11 @@ function UpdateApplicant(props) {
       role,
       level,
       department,
-      date_applied: dateApplied,
+      date_applied: moment(dateApplied).format(),
       status
     }
+
+    // console.log(applicant)
 
     axios.patch(applicants_api + id, applicant)
       .then(res => {
@@ -101,25 +110,25 @@ function UpdateApplicant(props) {
         <div className="form-group">
           <label>
             Name:
-            <input className="form-control" type='text' name='name' value={name} onChange={(e) => setName(e.target.value)} />
+            <input className="form-control" type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} />
           </label>
         </div>
         <div className="form-group">
           <label>
             Email:
-            <input className="form-control" type='text' name='email' value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input className="form-control" type="text" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           </label>
         </div>
         <div className="form-group">
           <label>
             Contact:
-            <input className="form-control" type='text' name='contact' value={contact} onChange={(e) => setContact(e.target.value)} />
+            <input className="form-control" type="text" name="contact" value={contact} onChange={(e) => setContact(e.target.value)} />
           </label>
         </div>
         <div className="form-group">
           <label>
             Role:
-            <select className="form-control" name='role' value={role} onChange={(e) => setRole(e.target.value)}>
+            <select className="form-control" name="role" value={role} onChange={(e) => setRole(e.target.value)}>
               {rolesArray.map(role =>
                 <option key={role}>{role}</option>
               )}
@@ -129,7 +138,7 @@ function UpdateApplicant(props) {
         <div className="form-group">
           <label>
             Level:
-            <select className="form-control" name='level' value={level} onChange={(e) => setLevel(e.target.value)}>
+            <select className="form-control" name="level" value={level} onChange={(e) => setLevel(e.target.value)}>
               {levelsArray.map(level =>
                 <option key={level}>{level}</option>
               )}
@@ -139,7 +148,7 @@ function UpdateApplicant(props) {
         <div className="form-group">
           <label>
             Department:
-            <select className="form-control" name='department' value={department} onChange={(e) => setDepartment(e.target.value)}>
+            <select className="form-control" name="department" value={department} onChange={(e) => setDepartment(e.target.value)}>
               {departmentsArray.map(department =>
                 <option key={department}>{department}</option>
               )}
@@ -148,17 +157,17 @@ function UpdateApplicant(props) {
         </div>
         <div className="form-group">
           <label>Schedule
-            <input className="form-control" type="datetime-local" name="dateApplied" value={dateApplied} onChange={(e) => setDateApplied(e.target.value)} />
+            <DatePicker className="form-control" name="dateApplied" selected={dateApplied} onChange={(date) => setDateApplied(date)} />
           </label>
         </div>
         <div className="form-group">
           <label>
             Status:
-            <input className="form-control" type='text' name='contact' value={status} onChange={(e) => setStatus(e.target.value)} />
+            <input className="form-control" type="text" name="contact" value={status} onChange={(e) => setStatus(e.target.value)} />
           </label>
         </div>
         <div className="form-group">
-          <button className="button save" type='submit'>update</button>
+          <button className="button save" type="submit">update</button>
         </div>
       </form>
     </div>

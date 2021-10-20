@@ -6,6 +6,7 @@ import { MdClose } from "react-icons/md"
 import { AiOutlineLoading3Quarters } from "react-icons/ai"
 
 import { api_4_applicants } from '../../api/apis'
+import ApplicantStats from './ApplicantStats'
 import ApplicantInfo from './ApplicantInfo'
 import ApplicantForm from './ApplicantForm'
 import UpdateApplicant from './UpdateApplicant'
@@ -85,11 +86,14 @@ function ApplicantList() {
 
   let content
   let menu
+  let statistics
 
   if (load) {
     content = <span><AiOutlineLoading3Quarters className="load" /></span>
+    statistics = <></>
   } else {
     if (view === 'list') {
+      statistics = <ApplicantStats />
       menu = <>
         <div className="menu-left">
           <label>Search Name:</label>
@@ -126,10 +130,11 @@ function ApplicantList() {
                           <td>
                             <span
                                 className={
-                                            applicant.status === "screening" ? "badge badge-screening" :
-                                            applicant.status === "exam" ? "badge badge-in-progress" :
-                                            applicant.status === "initial interview" ? "badge badge-in-progress" :
-                                            applicant.status === "final interview" ? "badge badge-in-progress" :
+                                            applicant.status === "in progress" ? "badge badge-in-progress" :
+                                            applicant.status === "done screening" ? "badge badge-screening" :
+                                            applicant.status === "passed exam" ? "badge badge-exam" :
+                                            applicant.status === "initial interview" ? "badge badge-initial" :
+                                            applicant.status === "final interview" ? "badge badge-final" :
                                             applicant.status === "completed" ? "badge badge-completed" :
                                             "badge badge-failed"
                                           }
@@ -166,10 +171,13 @@ function ApplicantList() {
 
   return (
     <>
+      {statistics}
       <div className="menu">
         {menu}
       </div>
-      <div className="list">{content}</div>
+      <div className="list">
+        {content}
+      </div>
     </>
   )
 }

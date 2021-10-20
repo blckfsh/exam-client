@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import DatePicker from 'react-datepicker';
 import axios from 'axios'
 import moment from 'moment'
 import { FaUser, FaCheck, FaCheckCircle,  } from "react-icons/fa"
 import { MdClose } from "react-icons/md"
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 import { api_4_applicants, api_4_exam_evaluation, api_4_initial_interview, api_4_final_interview } from '../../api/apis'
 
@@ -176,7 +179,7 @@ function ApplicantInfo(props) {
           setInchecker(true)
           res.map(initial => {
             let { schedule, portfolio, communication, experience, coding, culture, pros, cons, decline, recommendation } = initial
-            setSchedule(schedule)
+            setSchedule(moment(schedule).toDate())
             setPortfolio(portfolio)
             setCommunication(communication)
             setExperience(experience)
@@ -222,7 +225,7 @@ function ApplicantInfo(props) {
           setFichecker(true)
           res.map(final => {
             let { schedule, attitude, communication, culture, knowledge, decline, recommendation } = final
-            setSchedule2(schedule)
+            setSchedule2(moment(schedule).toDate())
             setAttitude(attitude)
             setCommunication2(communication)
             setCulture2(culture)
@@ -260,7 +263,7 @@ function ApplicantInfo(props) {
     const applicant = {
       status: value
     }
-    
+
     axios.patch(applicants_api + id, applicant)
       .then(res => console.log('status updated'))
       .catch(error => console.error(error.message))
@@ -471,7 +474,7 @@ function ApplicantInfo(props) {
             <form className="form" onSubmit={(e) => handleInitialInteview(e)}>
               <div className="form-group">
                 <label>Schedule
-                  <input className="form-control" type="datetime-local" name="schedule" value={schedule} onChange={(e) => setSchedule(e.target.value)} />
+                  <DatePicker className="form-control" name="schedule" selected={schedule} onChange={(date) => setSchedule(date)} />
                 </label>
               </div>
               <div className="form-group">
@@ -546,7 +549,7 @@ function ApplicantInfo(props) {
             <form className="form" onSubmit={(e) => handleFinalInterview(e)}>
               <div className="form-group">
                 <label>Schedule
-                  <input className="form-control" type="datetime-local" name="schedule2" value={schedule2} onChange={(e) => setSchedule2(e.target.value)} />
+                  <DatePicker className="form-control" name="schedule2" selected={schedule2} onChange={(date) => setSchedule2(date)} />
                 </label>
               </div>
               <div className="form-group">

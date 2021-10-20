@@ -1,12 +1,15 @@
-import React from 'react';
-import ApplicantList from './ApplicantList';
+import React from 'react'
+import ApplicantList from './ApplicantList'
 
 function ApplicantContainer() {
 
   return (
-    <div className="card">
-      <div className="card-body"><ApplicantList /></div>
-    </div>
+    <>
+      <div className="card">
+        <div className="card-body"><ApplicantList /></div>
+      </div>
+    </>
+
   )
 }
 

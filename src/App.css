@@ -170,19 +170,34 @@ body {
   border-radius: 30px;
 }
 
+.badge-in-progress {
+  color: var(--white);
+  background: var(--dark-violet);
+}
+
 .badge-screening {
   color: var(--dark);
   background: var(--sunflower);
 }
 
-.badge-in-progress {
+.badge-exam {
+  color: var(--white);
+  background: var(--peter-silver);
+}
+
+.badge-initial {
   color: var(--white);
   background: var(--carrot);
 }
 
-.badge-completed {
+.badge-final {
   color: var(--white);
   background: var(--emerald);
+}
+
+.badge-completed {
+  color: var(--white);
+  background: var(--dark-violet);
 }
 
 .badge-failed {
@@ -490,6 +505,77 @@ body {
 
 .evaluate-right .evaluate-result .score span {
   font-size: 45px;
+}
+
+/* Statistics Section */
+.statistics {
+  max-width: 1400px;
+  margin: auto;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.statistics .row {
+  flex: 1 20%;
+}
+
+.statistics .row:nth-child(1),
+.statistics .row:nth-child(3) {
+  display: flex;
+  justify-content: flex-end
+}
+
+.statistics .row .stat-content {
+  width: 300px;
+  margin: 10px 10px;
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+}
+
+.statistics .row:nth-child(1) .stat-content {
+  margin-left: 0;
+}
+
+.statistics .row:nth-child(4) .stat-content {
+  margin-right: 0;
+}
+
+.statistics .row .stat-content.screening {
+  background: var(--sunflower);
+}
+
+.statistics .row .stat-content.passed-exam {
+  background: var(--peter-silver);
+}
+
+.statistics .row .stat-content.passed-initial {
+  background: var(--carrot);
+}
+
+.statistics .row .stat-content.passed-final {
+  background: var(--emerald);
+}
+
+.statistics .row .stat-content .img-container {
+  border-right: 1px solid var(--white-alpha-25);
+  padding: 10px;
+  padding-left: 0;
+  margin-right: 20px;
+  font-size: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.statistics .row .stat-content .body .stat-description {
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.statistics .row .stat-content .body .stat-value {
+  font-size: 50px;
 }
 
 
