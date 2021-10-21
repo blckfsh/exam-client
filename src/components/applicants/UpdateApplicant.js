@@ -116,7 +116,7 @@ function UpdateApplicant(props) {
 
   useEffect(() => {
     getApplicantById(id)
-  }, [])
+  }, [id])
 
   return (
     <div>
@@ -186,8 +186,8 @@ function UpdateApplicant(props) {
               <option key="done screening">done screening</option>
               <option key="send exam">send exam</option>
               <option key="passed exam">passed exam</option>
-              <option key="initial interview">initial interview</option>
-              <option key="final interview">final interview</option>
+              <option key="passed initial">passed initial</option>
+              <option key="passed final">passed final</option>
               <option key="completed">completed</option>
               <option key="failed">failed</option>
             </select>

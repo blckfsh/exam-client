@@ -134,8 +134,8 @@ function ApplicantList() {
                                             applicant.status === "done screening" ? "badge badge-screening" :
                                             applicant.status === "send exam" ? "badge badge-in-progress" :
                                             applicant.status === "passed exam" ? "badge badge-exam" :
-                                            applicant.status === "initial interview" ? "badge badge-initial" :
-                                            applicant.status === "final interview" ? "badge badge-final" :
+                                            applicant.status === "passed initial" ? "badge badge-initial" :
+                                            applicant.status === "passed final" ? "badge badge-final" :
                                             applicant.status === "completed" ? "badge badge-completed" :
                                             "badge badge-failed"
                                           }

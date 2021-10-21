@@ -39,11 +39,11 @@ function ApplicantStats() {
             } else if (status === 'passed exam') {
               totalScreening = totalScreening + 1
               totalExam = totalExam + 1
-            } else if (status === 'initial interview') {
+            } else if (status === 'passed initial') {
               totalScreening = totalScreening + 1
               totalExam = totalExam + 1
               totalInitial = totalInitial + 1
-            } else if (status === 'final interview') {
+            } else if (status === 'passed final' || status === 'completed') {
               totalScreening = totalScreening + 1
               totalExam = totalExam + 1
               totalInitial = totalInitial + 1

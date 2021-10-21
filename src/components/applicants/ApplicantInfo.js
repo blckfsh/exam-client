@@ -284,8 +284,8 @@ function ApplicantInfo(props) {
     if (exchecker === false) {
       axios.post(exams_api, exam)
         .then(res => {
-          setStatus('initial interview')
-          updateApplicantStatus('initial interview')
+          setStatus('passed exam')
+          updateApplicantStatus('passed exam')
         })
         .then(res => setExchecker(true))
         .then(res => getExamEvaluation(id))
@@ -321,8 +321,8 @@ function ApplicantInfo(props) {
     if (inchecker === false) {
       axios.post(initials_api, initialInterview)
         .then(res => {
-          setStatus('final interview')
-          updateApplicantStatus('final interview')
+          setStatus('passed initial')
+          updateApplicantStatus('passed initial')
         })
         .then(res => setInchecker(true))
         .then(res => getInitialInterview(id))
@@ -355,8 +355,8 @@ function ApplicantInfo(props) {
     if (fichecker === false) {
       axios.post(finals_api, finalInterview)
         .then(res => {
-          setStatus('completed')
-          updateApplicantStatus('completed')
+          setStatus('passed final')
+          updateApplicantStatus('passed final')
         })
         .then(res => setFichecker(true))
         .then(res => getFinalInterview(id))
