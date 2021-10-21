@@ -132,6 +132,7 @@ function ApplicantList() {
                                 className={
                                             applicant.status === "in progress" ? "badge badge-in-progress" :
                                             applicant.status === "done screening" ? "badge badge-screening" :
+                                            applicant.status === "send exam" ? "badge badge-in-progress" :
                                             applicant.status === "passed exam" ? "badge badge-exam" :
                                             applicant.status === "initial interview" ? "badge badge-initial" :
                                             applicant.status === "final interview" ? "badge badge-final" :

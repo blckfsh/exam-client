@@ -82,6 +82,13 @@ function UpdateApplicant(props) {
       status
     }
 
+    const sendExam = {
+      email,
+      role,
+      level,
+      department
+    }
+
     // console.log(applicant)
 
     axios.patch(applicants_api + id, applicant)
@@ -91,6 +98,14 @@ function UpdateApplicant(props) {
           setTimeout(() => {
             setAlert(false)
           }, 5000)
+
+          if (status === 'send exam') {
+            axios.post(applicants_api + "mail", sendExam)
+                 .then(res => {
+                   console.log('Auto Emailing Initialized')
+                 })
+                 .catch(error => console.log(error.message))
+          }
         }
       })
       .catch(error => {
@@ -105,7 +120,10 @@ function UpdateApplicant(props) {
 
   return (
     <div>
-      { alert === 'success' ? <div className="alert success"><p>applicant updated successfully</p></div> : alert === 'fail' ? <div className="alert fail"><p>failed to update the applicant</p></div> : '' }
+      {
+        alert === 'success' ? <div className="alert success"><p>applicant updated successfully</p></div> :
+        alert === 'fail' ? <div className="alert fail"><p>failed to update the applicant</p></div> : ''
+      }
       <form className="form" onSubmit={(e) => handleSubmit(e)}>
         <div className="form-group">
           <label>
@@ -163,7 +181,16 @@ function UpdateApplicant(props) {
         <div className="form-group">
           <label>
             Status:
-            <input className="form-control" type="text" name="contact" value={status} onChange={(e) => setStatus(e.target.value)} />
+            <select className="form-control" name="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+              <option key="in progress">in progress</option>
+              <option key="done screening">done screening</option>
+              <option key="send exam">send exam</option>
+              <option key="passed exam">passed exam</option>
+              <option key="initial interview">initial interview</option>
+              <option key="final interview">final interview</option>
+              <option key="completed">completed</option>
+              <option key="failed">failed</option>
+            </select>
           </label>
         </div>
         <div className="form-group">

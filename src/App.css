@@ -230,6 +230,7 @@ body {
 .table {
   font-size: 14px;
   width: 100%;
+  text-align: center;
   border: 1px solid var(--light-dark);
 }
 

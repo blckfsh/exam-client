@@ -55,12 +55,12 @@ function ApplicantForm() {
       status
     }
 
-    const sendExam = {
-      email,
-      role,
-      level,
-      department
-    }
+    // const sendExam = {
+    //   email,
+    //   role,
+    //   level,
+    //   department
+    // }
 
     axios.get(applicants_api + "info/" + name + "/" + email)
          .then(res => {
@@ -71,18 +71,25 @@ function ApplicantForm() {
            } else {
              axios.post(applicants_api, applicant)
                   .then((res) => {
-                       axios.post(applicants_api + "mail", sendExam)
-                            .then(res => {
-                              setName('')
-                              setEmail('')
-                              setContact('')
-                              setRole('cms developer')
-                              setLevel('junior')
-                              setDepartment('Creatives - UK')
-                              setStatus('in progress')
-                              setAlert('success')
-                            })
-                            .catch(error => console.log(error.message))
+
+                      setAlert('success')
+                      console.log('No auto mailing')
+                      setTimeout(() => {
+                        setAlert('')
+                      }, 5000)
+
+                       // axios.post(applicants_api + "mail", sendExam)
+                       //      .then(res => {
+                       //        setName('')
+                       //        setEmail('')
+                       //        setContact('')
+                       //        setRole('cms developer')
+                       //        setLevel('junior')
+                       //        setDepartment('Creatives - UK')
+                       //        setStatus('in progress')
+                       //        setAlert('success')
+                       //      })
+                       //      .catch(error => console.log(error.message))
                   })
                   .catch(error =>
                    {
@@ -97,9 +104,11 @@ function ApplicantForm() {
 
   return (
     <div>
-      { alert === 'success' ? <div className="alert success"><p>applicant added successfully</p></div> :
+      {
+        alert === 'success' ? <div className="alert success"><p>applicant added successfully</p></div> :
         alert === 'fail' ? <div className="alert fail"><p>failed to add the applicant</p></div> :
-        alert === 'existed' ? <div className="alert fail"><p>applicant has already been added to the list.</p></div> :  '' }
+        alert === 'existed' ? <div className="alert fail"><p>applicant has already been added to the list.</p></div> :  ''
+      }
       <form className="form" onSubmit={(e) => handleSubmit(e)}>
         <div className="form-group">
           <label>
