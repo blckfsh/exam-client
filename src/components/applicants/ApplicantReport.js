@@ -261,7 +261,13 @@ function ApplicantReport(props) {
 const options_doughnut = {
   plugins: {
     legend: {
-      display: true
+      display: true,
+      position: 'right',
+      labels: {
+        color: '#fff',
+        padding: 20,
+        boxWidth: 20
+      }
     }
   }
 }
