@@ -3,6 +3,17 @@
 <br>
 <p>NOTE: please run <a href="#">npm install</a> after cloning</p>
 <br>
+<strong>v1.7</strong>&nbsp;<small>October 22, 2021</small>
+<p>Summary:</p>
+<ul>
+  <li>Added Reports (Graph)</li>
+</ul>
+<p>packages added:</p>
+<ul>
+  <li>chartjs</li>
+</ul>
+<br>
+<br>
 <strong>v1.6</strong>&nbsp;<small>October 21, 2021</small>
 <p>Summary:</p>
 <ul>

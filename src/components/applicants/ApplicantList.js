@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import moment from 'moment'
 import { FaEye, FaEdit, FaTrash, FaUserPlus } from "react-icons/fa"
-import { MdClose } from "react-icons/md"
+import { MdClose, MdOutlineAutoGraph } from "react-icons/md"
 import { AiOutlineLoading3Quarters } from "react-icons/ai"
 
 import { api_4_applicants } from '../../api/apis'
@@ -10,6 +10,7 @@ import ApplicantStats from './ApplicantStats'
 import ApplicantInfo from './ApplicantInfo'
 import ApplicantForm from './ApplicantForm'
 import UpdateApplicant from './UpdateApplicant'
+import ApplicantReport from './ApplicantReport'
 
 function ApplicantList() {
 
@@ -106,6 +107,7 @@ function ApplicantList() {
           />
         </div>
         <div className="action"><a className="add" onClick={() => setView('add')}><FaUserPlus /> add applicant</a></div>
+        <div className="action m-left"><a className="report" onClick={() => setView('report')}><MdOutlineAutoGraph /> reporting</a></div>
       </>
       content = <table className="table">
         <thead>
@@ -167,6 +169,9 @@ function ApplicantList() {
     } else if (view === 'info') {
       menu = <div className="action exit"><a className="close" onClick={() => getApplicants()}><MdClose /></a></div>
       content = <ApplicantInfo applicantId={applicantId} />
+    } else if (view  === 'report') {
+      menu = <div className="action exit"><a className="close" onClick={() => getApplicants()}><MdClose /></a></div>
+      content = <ApplicantReport applicants={applicants} />
     }
   }
 

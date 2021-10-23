@@ -44,6 +44,19 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+/* select */
+select option {
+  background: var(--light-dark);
+  border: 1px solid var(--light-dark);
+  border-top: none;
+  transition: all 0.5s ease-in-out;
+}
+
+/* margin */
+.m-left {
+  margin-left: 10px
+}
+
 /* Display */
 .active {
   visibility: visible !important;
@@ -135,6 +148,11 @@ body {
 .action a.add {
   background: var(--emerald);
   border: 1px solid var(--emerald);
+}
+
+.action a.report {
+  background: var(--dark-violet);
+  border: 1px solid var(--dark-violet);
 }
 
 .action a.close {
@@ -300,13 +318,6 @@ body {
   border: 1px solid var(--light-dark);
   color: var(--white);
   width: 100%;
-}
-
-.form .form-group select option {
-  background: var(--light-dark);
-  border: 1px solid var(--light-dark);
-  border-top: none;
-  transition: all 0.5s ease-in-out;
 }
 
 .form .form-group .button {
@@ -577,6 +588,32 @@ body {
 
 .statistics .row .stat-content .body .stat-value {
   font-size: 50px;
+}
+
+/* Charts Section */
+.chart {
+  width: 1200px;
+}
+
+.chart .chart-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.chart .chart-header div:first-child {
+  width: 1000px;
+}
+
+.chart .chart-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart .chart-body .doughnut {
+  width: 500px;
 }
 
 
