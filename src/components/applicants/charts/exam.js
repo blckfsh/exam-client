@@ -14,7 +14,6 @@ function ExamChart(props) {
         backgroundColor: 'rgba(142, 68, 173, .5)',
         borderColor: 'rgba(155, 89, 182,1.0)',
         borderWidth: 1,
-        borderDash: 5,
         label: {
           color: '#fff'
         }

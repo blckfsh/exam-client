@@ -607,12 +607,12 @@ function ApplicantInfo(props) {
           </div>
           <div className="evaluate-right">
             <div className="evaluate-result">
-              // <ExamChart
-              //   approach={approach}
-              //   attention={attention}
-              //   comprehension={comprehension}
-              //   responsiveness={responsiveness}
-              // />
+              <ExamChart
+                approach={approach}
+                attention={attention}
+                comprehension={comprehension}
+                responsiveness={responsiveness}
+              />
               <div className={examConfirmation === true ? "icon passed" : "icon failed"}>{examConfirmation === true ? <FaCheck /> : <MdClose />}</div>
               <p className="text">exam rating:</p>
               <h1 className="score">{exam}<span>%</span></h1>
