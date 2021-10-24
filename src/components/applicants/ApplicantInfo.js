@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import DatePicker from 'react-datepicker';
+import DatePicker from 'react-datepicker'
 import axios from 'axios'
 import moment from 'moment'
-import { FaUser, FaCheck, FaCheckCircle,  } from "react-icons/fa"
+import parse from 'html-react-parser'
+import { FaUser, FaCheck, FaCheckCircle, FaFileContract, FaQuestionCircle } from "react-icons/fa"
 import { MdClose } from "react-icons/md"
+import Popup from 'reactjs-popup'
+import 'reactjs-popup/dist/index.css'
 
-import 'react-datepicker/dist/react-datepicker.css';
+import 'react-datepicker/dist/react-datepicker.css'
 
-import { api_4_applicants, api_4_exam_evaluation, api_4_initial_interview, api_4_final_interview } from '../../api/apis'
+import ExamChart from './charts/exam.js'
+import { api_4_applicants, api_4_exam_evaluation, api_4_initial_interview, api_4_final_interview, api_4_logs } from '../../api/apis'
 
 function ApplicantInfo(props) {
 
@@ -26,6 +30,9 @@ function ApplicantInfo(props) {
   // connect to finals_api
   const finals_api = api_4_final_interview
 
+  // connect to logs_api
+  const logs_api = api_4_logs
+
   // states: confirmation
   const [alert, setAlert] = useState('')
 
@@ -36,6 +43,9 @@ function ApplicantInfo(props) {
   const [initialConfirmation, setInitialConfirmation] = useState(false)
   const [fichecker, setFichecker] = useState(false)
   const [finalConfirmation, setFinalConfirmation] = useState(false)
+  const [viewExamLogs, setViewExamLogs] = useState(false)
+  const [viewInitialLogs, setViewInitialLogs] = useState(false)
+  const [viewFinalLogs, setViewFinalLogs] = useState(false)
 
   // states: for api-related (Applicants)
   const [applicantId, setApplicantId] = useState('')
@@ -68,6 +78,7 @@ function ApplicantInfo(props) {
   const [decline, setDecline] = useState('Availability')
   const [recommendation2, setRecommendation2] = useState('')
   const [initial, setInitial] = useState(0)
+  const [initialReport, setInitialReport] = useState([])
 
   // states: for api-related (Final Interview)
   const [schedule2, setSchedule2] = useState('')
@@ -78,7 +89,11 @@ function ApplicantInfo(props) {
   const [decline2, setDecline2] = useState('Availability')
   const [recommendation3, setRecommendation3] = useState('')
   const [final, setFinal] = useState(0)
+  const [finalReport, setFinalReport] = useState([])
 
+  // states: for api-related (Logs)
+  const [logs, setLogs] = useState([])
+  const [content, setContent] = useState('')
 
   // list of decline reasons (Initial Interview)
   const declineReasonArray = [
@@ -259,6 +274,27 @@ function ApplicantInfo(props) {
       .catch(error => console.log(error.message))
   }
 
+  const getLogsById = (id) => {
+    fetch(logs_api + id)
+      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+        setLogs(res)
+
+        res.map(log => {
+          if (log.category === 'exam') {
+              setViewExamLogs(true)
+          } else if (log.category === 'initial') {
+              setViewInitialLogs(true)
+          } else if (log.category === 'final') {
+              setViewFinalLogs(true)
+          }
+        })
+      })
+      .catch(error => console.log(error.message))
+  }
+
+
   const updateApplicantStatus = (value) => {
     const applicant = {
       status: value
@@ -267,6 +303,57 @@ function ApplicantInfo(props) {
     axios.patch(applicants_api + id, applicant)
       .then(res => console.log('status updated'))
       .catch(error => console.error(error.message))
+  }
+
+  const createLogs = (category) => {
+
+    let lcontent
+
+    if (category === 'exam') {
+      lcontent = `<div>
+          <p>Coding Style: <strong>${approach}</strong></p>
+          <p>Brief Comprehension: <strong>${comprehension}</strong></p>
+          <p>Responsiveness: <strong>${responsiveness}</strong></p>
+          <p>Attention To Detail: <strong>${attention}</strong></p>
+          <p>Recommendation: <strong>${recommendation}</strong></p>
+      </div>`
+    } else if (category === 'initial') {
+      lcontent = `<div>
+          <p>Schedule: <strong>${schedule}</strong></p>
+          <p>Portfolio Review: <strong>${portfolio}</strong></p>
+          <p>Communication Skills: <strong>${communication}</strong></p>
+          <p>Relevant Experience: <strong>${experience}</strong></p>
+          <p>Coding Style/Approach: <strong>${coding}</strong></p>
+          <p>Culture Fit: <strong>${culture}</strong></p>
+          <p>Pros: <strong>${pros}</strong></p>
+          <p>Cons: <strong>${cons}</strong></p>
+          <p>Decline Reason: <strong>${decline}</strong></p>
+          <p>Recommendation: <strong>${recommendation2}</strong></p>
+      </div>`
+    } else if (category === 'final') {
+      lcontent = `<div>
+          <p>Schedule: <strong>${schedule2}</strong></p>
+          <p>Attitude/Motivation: <strong>${attitude}</strong></p>
+          <p>Communication Skills: <strong>${communication2}</strong></p>
+          <p>Culture Fit: <strong>${culture2}</strong></p>
+          <p>Industry Knowledge: <strong>${knowledge}</strong></p>
+          <p>Decline Reason: <strong>${decline2}</strong></p>
+          <p>Recommendation: <strong>${recommendation3}</strong></p>
+      </div>`
+    }
+
+    const examLog = {
+      applicantId,
+      category,
+      content: lcontent
+    }
+
+    // console.log(examLog)
+
+    axios.post(logs_api, examLog)
+      .then(res => console.log('added log'))
+      .then(res => getLogsById(id))
+      .catch(error => console.log(error.message))
   }
 
   const handleExamEvaluation = (event) => {
@@ -289,12 +376,14 @@ function ApplicantInfo(props) {
         })
         .then(res => setExchecker(true))
         .then(res => getExamEvaluation(id))
+        .then(res => createLogs('exam'))
         .catch(error => console.log(error.message))
     } else {
       axios.patch(exams_api + id, exam)
         .then(res => console.log('exam evaluation updated'))
         .then(res => setExchecker(true))
         .then(res => getExamEvaluation(id))
+        .then(res => createLogs('exam'))
         .catch(error => console.log(error.message))
     }
 
@@ -326,12 +415,14 @@ function ApplicantInfo(props) {
         })
         .then(res => setInchecker(true))
         .then(res => getInitialInterview(id))
+        .then(res => createLogs('initial'))
         .catch(error => console.log(error.message))
     } else {
       axios.patch(initials_api + id, initialInterview)
         .then(res => console.log('initial interview updated'))
         .then(res => setInchecker(true))
         .then(res => getInitialInterview(id))
+        .then(res => createLogs('initial'))
         .catch(error => console.log(error.message))
     }
   }
@@ -360,12 +451,14 @@ function ApplicantInfo(props) {
         })
         .then(res => setFichecker(true))
         .then(res => getFinalInterview(id))
+        .then(res => createLogs('final'))
         .catch(error => console.log(error.message))
     } else {
       axios.patch(finals_api + id, finalInterview)
         .then(res => console.log('final interview updated'))
         .then(res => setFichecker(true))
         .then(res => getFinalInterview(id))
+        .then(res => createLogs('final'))
         .catch(error => console.log(error.message))
     }
   }
@@ -375,6 +468,12 @@ function ApplicantInfo(props) {
     getExamEvaluation(id)
     getInitialInterview(id)
     getFinalInterview(id)
+    getLogsById(id)
+
+    // check the view logs
+    console.log(viewExamLogs)
+    console.log(viewInitialLogs)
+    console.log(viewFinalLogs)
 
     // set state applicantId = props.id
     setApplicantId(id)
@@ -421,7 +520,55 @@ function ApplicantInfo(props) {
         </ul>
       </div>
       <div className="content">
-        <h3>exam evaluation</h3>
+        <div className="content-header">
+          <div className="ch-item">
+            <h3>exam evaluation
+              <Popup
+                trigger={open => (
+                  <a className="note"><FaQuestionCircle /></a>
+                )}
+                position="right top"
+                on={['hover', 'focus']}
+              >
+                <span> Rating: You can give a score from 1 - 5 where 1 is the lowest and 5 is the highest </span>
+              </Popup>
+            </h3>
+          </div>
+          <div className="ch-item">
+            {
+              viewExamLogs === true ?
+                <Popup
+                  trigger={
+                    <div className="action"><a className="add"><FaFileContract /> view logs</a></div>
+                  }
+                  position="right center"
+                  modal
+                  lockScroll="true"
+                >
+                {close => (
+                    <div className="modal">
+                      <div className="action exit"><a className="close" onClick={close}><MdClose /></a></div>
+                      <div className="header"><span>logs:</span> exam evaluation</div>
+                      <div className="content">
+                        {' '}
+                        <div className="logs">
+                          {
+                            logs.filter(log => log.category.toLowerCase() === 'exam').map((log, index) =>
+                              <div key={index} className="logs-item">
+                                <span className="date">{moment(log.timestamp).format('MMMM Do YYYY, h:mm:ss a')}</span>
+                                <div className="logs-message">{parse(log.content)}</div>
+                              </div>
+                            )
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </Popup>
+                : ''
+            }
+          </div>
+        </div>
         <div className="evaluation">
           <div className="evaluate-left">
             <form className="form" onSubmit={(e) => handleExamEvaluation(e)}>
@@ -460,6 +607,12 @@ function ApplicantInfo(props) {
           </div>
           <div className="evaluate-right">
             <div className="evaluate-result">
+              // <ExamChart
+              //   approach={approach}
+              //   attention={attention}
+              //   comprehension={comprehension}
+              //   responsiveness={responsiveness}
+              // />
               <div className={examConfirmation === true ? "icon passed" : "icon failed"}>{examConfirmation === true ? <FaCheck /> : <MdClose />}</div>
               <p className="text">exam rating:</p>
               <h1 className="score">{exam}<span>%</span></h1>
@@ -468,7 +621,55 @@ function ApplicantInfo(props) {
         </div>
       </div>
       <div className="content">
-        <h3>initial interview</h3>
+        <div className="content-header">
+          <div className="ch-item">
+            <h3>initial interview
+              <Popup
+                trigger={open => (
+                  <a className="note"><FaQuestionCircle /></a>
+                )}
+                position="right top"
+                on={['hover', 'focus']}
+              >
+                <span> Rating: You can give a score from 1 - 5 where 1 is the lowest and 5 is the highest </span>
+              </Popup>
+            </h3>
+          </div>
+          <div className="ch-item">
+            {
+              viewInitialLogs === true ?
+                <Popup
+                  trigger={
+                    <div className="action"><a className="add"><FaFileContract /> view logs</a></div>
+                  }
+                  position="right center"
+                  modal
+                  lockScroll="true"
+                >
+                {close => (
+                    <div className="modal">
+                      <div className="action exit"><a className="close" onClick={close}><MdClose /></a></div>
+                      <div className="header"><span>logs:</span> initial interview</div>
+                      <div className="content">
+                        {' '}
+                        <div className="logs">
+                          {
+                            logs.filter(log => log.category.toLowerCase() === 'initial').map((log, index) =>
+                              <div key={index} className="logs-item">
+                                <span className="date">{moment(log.timestamp).format('MMMM Do YYYY, h:mm:ss a')}</span>
+                                <div className="logs-message">{parse(log.content)}</div>
+                              </div>
+                            )
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </Popup>
+                : ''
+            }
+          </div>
+        </div>
         <div className="evaluation">
           <div className="evaluate-left">
             <form className="form" onSubmit={(e) => handleInitialInteview(e)}>
@@ -543,7 +744,55 @@ function ApplicantInfo(props) {
         </div>
       </div>
       <div className="content">
-        <h3>final interview</h3>
+        <div className="content-header">
+          <div className="ch-item">
+            <h3>final interview
+              <Popup
+                trigger={open => (
+                  <a className="note"><FaQuestionCircle /></a>
+                )}
+                position="right top"
+                on={['hover', 'focus']}
+              >
+                <span> Rating: You can give a score from 1 - 5 where 1 is the lowest and 5 is the highest </span>
+              </Popup>
+            </h3>
+          </div>
+          <div className="ch-item">
+            {
+              viewFinalLogs === true ?
+                <Popup
+                  trigger={
+                    <div className="action"><a className="add"><FaFileContract /> view logs</a></div>
+                  }
+                  position="right center"
+                  modal
+                  lockScroll="true"
+                >
+                {close => (
+                    <div className="modal">
+                      <div className="action exit"><a className="close" onClick={close}><MdClose /></a></div>
+                      <div className="header"><span>logs:</span> final interview</div>
+                      <div className="content">
+                        {' '}
+                        <div className="logs">
+                          {
+                            logs.filter(log => log.category.toLowerCase() === 'final').map((log, index) =>
+                              <div key={index} className="logs-item">
+                                <span className="date">{moment(log.timestamp).format('MMMM Do YYYY, h:mm:ss a')}</span>
+                                <div className="logs-message">{parse(log.content)}</div>
+                              </div>
+                            )
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </Popup>
+                : ''
+            }
+          </div>
+        </div>
         <div className="evaluation">
           <div className="evaluate-left">
             <form className="form" onSubmit={(e) => handleFinalInterview(e)}>

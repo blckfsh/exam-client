@@ -3,6 +3,18 @@
 <br>
 <p>NOTE: please run <a href="#">npm install</a> after cloning</p>
 <br>
+<strong>v1.8</strong>&nbsp;<small>October 24, 2021</small>
+<p>Summary:</p>
+<ul>
+  <li>Added Logs and Tooltip</li>
+</ul>
+<p>packages added:</p>
+<ul>
+  <li>react-parser</li>
+  <li>reactjs-popup</li>
+</ul>
+<br>
+<br>
 <strong>v1.7</strong>&nbsp;<small>October 22, 2021</small>
 <p>Summary:</p>
 <ul>

@@ -44,6 +44,17 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background-color: var(--light-dark);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--dark-violet);
+}
+
 /* select */
 select option {
   background: var(--light-dark);
@@ -360,6 +371,30 @@ select option {
   margin-bottom: none;
 }
 
+.content .content-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.content .content-header .ch-item:first-child {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.content .content-header .note {
+  margin-left: 10px;
+  color: var(--white-alpha-25);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+
+.content .content-header .note:hover {
+  color: var(--white);
+}
+
 /* Personal Details */
 .personal-details {
   display: flex;
@@ -614,6 +649,84 @@ select option {
 
 .chart .chart-body .doughnut {
   width: 500px;
+}
+
+/* Modal Section */
+.modal {
+  font-size: 16px;
+  padding: 20px;
+  max-height: 700px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.modal > .header {
+  width: 100%;
+  font-size: 18px;
+  text-transform: capitalize;
+}
+
+.modal > .header span {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--white-alpha-40);
+}
+
+.modal > .content {
+  width: 100%;
+  padding: 10px 5px;
+  background: none !important;
+}
+
+.modal .content .logs {
+  position: relative;
+  margin-top: 20px;
+}
+
+.modal .content .logs::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  top: 0;
+  left: 5px;
+  background-color: var(--dark-violet);
+}
+
+.modal .content .logs .logs-item {
+  position: relative;
+  padding: 10px 0 20px 40px;
+}
+
+.modal .content .logs .logs-item::before {
+  content: '';
+  position: absolute;
+  height: 11px;
+  width: 11px;
+  background-color: var(--dark-violet);
+  left: 0;
+  top: 16px;
+  border-radius: 50%;
+}
+
+.modal .content .logs .logs-item .date {
+  color: var(--white-alpha-40);
+  font-size: 14px;
+}
+
+.modal .content .logs .logs-item .logs-message {
+  margin-top: 10px;
+  text-transform: none;
+}
+
+
+/* Overwrite (Modal) */
+.popup-content {
+  background: var(--dark) !important;
+  border: 1px solid var(--dark) !important;
+}
+
+.modal > .content {
+  margin-bottom: 0 !important;
 }
 
 

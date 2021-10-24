@@ -180,7 +180,7 @@ function ApplicantReport(props) {
 
   // Chart Configuration: Line
   const data_line = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     datasets: [
       {
         label: 'Applicants Per Month',
@@ -198,7 +198,7 @@ function ApplicantReport(props) {
   const options_line = {
     plugins: {
       legend: {
-        display: false
+        display: false,
       }
     },
     scales: {
