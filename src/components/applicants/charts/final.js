@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { PolarArea } from 'react-chartjs-2';
 
-function ExamChart(props) {
+function FinalChart(props) {
 
-  const { approach, attention, comprehension, responsiveness } = props
+  const { attitude, communication2, culture2, knowledge } = props
 
   const data = {
-  labels: ['Coding Style/Approach', 'Atttention To Detail', 'Brief Comprehension', 'Responsiveness'],
+  labels: ['Attitude/Motivation', 'Communication Skills', 'Culture Fit', 'Industry Knowledge'],
   datasets: [
     {
-      label: 'Exam Evaluation',
-      data: [approach, attention, comprehension, responsiveness],
+      label: 'Final Interview Evaluation',
+      data: [attitude, communication2, culture2, knowledge],
       backgroundColor: [
         'rgba(241, 196, 15, 0.5)',
         'rgba(39, 174, 96, 0.5)',
         'rgba(52, 152, 219, 0.5)',
-        'rgba(142, 68, 173, 0.5)',
+        'rgba(142, 68, 173, 0.5)'
       ],
       weight: 0,
       borderColor: 'rgba(255, 255, 255, 0.2)',
@@ -43,4 +43,4 @@ function ExamChart(props) {
   )
 }
 
-export default ExamChart
+export default FinalChart

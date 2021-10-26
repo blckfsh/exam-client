@@ -3,6 +3,13 @@
 <br>
 <p>NOTE: please run <a href="#">npm install</a> after cloning</p>
 <br>
+<strong>v1.9</strong>&nbsp;<small>October 26, 2021</small>
+<p>Summary:</p>
+<ul>
+  <li>Added Charts on Applicant Info</li>
+</ul>
+<br>
+<br>
 <strong>v1.8</strong>&nbsp;<small>October 24, 2021</small>
 <p>Summary:</p>
 <ul>

@@ -11,6 +11,8 @@ import 'reactjs-popup/dist/index.css'
 import 'react-datepicker/dist/react-datepicker.css'
 
 import ExamChart from './charts/exam.js'
+import InitialChart from './charts/initial.js'
+import FinalChart from './charts/final.js'
 import { api_4_applicants, api_4_exam_evaluation, api_4_initial_interview, api_4_final_interview, api_4_logs } from '../../api/apis'
 
 function ApplicantInfo(props) {
@@ -607,15 +609,23 @@ function ApplicantInfo(props) {
           </div>
           <div className="evaluate-right">
             <div className="evaluate-result">
-              <ExamChart
-                approach={approach}
-                attention={attention}
-                comprehension={comprehension}
-                responsiveness={responsiveness}
-              />
-              <div className={examConfirmation === true ? "icon passed" : "icon failed"}>{examConfirmation === true ? <FaCheck /> : <MdClose />}</div>
-              <p className="text">exam rating:</p>
-              <h1 className="score">{exam}<span>%</span></h1>
+              {
+                exchecker === true ?
+                <ExamChart
+                  approach={approach}
+                  attention={attention}
+                  comprehension={comprehension}
+                  responsiveness={responsiveness}
+                />
+                : ''
+              }
+              <div className="evaluate-score">
+                <p className="text">exam rating:</p>
+                <div className="score-content">
+                  <h1 className="score">{exam}<span>%</span></h1>
+                  <div className={examConfirmation === true ? "icon passed" : "icon failed"}>{examConfirmation === true ? <FaCheck /> : <MdClose />}</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -736,9 +746,24 @@ function ApplicantInfo(props) {
           </div>
           <div className="evaluate-right">
             <div className="evaluate-result">
-              <div className={initialConfirmation === true ? "icon passed" : "icon failed"}>{initialConfirmation === true ? <FaCheck /> : <MdClose />}</div>
-              <p className="text">initial interview rating:</p>
-              <h1 className="score">{initial}<span>%</span></h1>
+              {
+                inchecker === true ?
+                <InitialChart
+                  portfolio={portfolio}
+                  communication={communication}
+                  experience={experience}
+                  coding={coding}
+                  culture={culture}
+                />
+                : ''
+              }
+              <div className="evaluate-score">
+                <p className="text">initial interview rating:</p>
+                <div className="score-content">
+                  <h1 className="score">{initial}<span>%</span></h1>
+                  <div className={initialConfirmation === true ? "icon passed" : "icon failed"}>{initialConfirmation === true ? <FaCheck /> : <MdClose />}</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -844,9 +869,23 @@ function ApplicantInfo(props) {
           </div>
           <div className="evaluate-right">
             <div className="evaluate-result">
-              <div className={finalConfirmation === true ? "icon passed" : "icon failed"}>{finalConfirmation === true ? <FaCheck /> : <MdClose />}</div>
-              <p className="text">final interview rating:</p>
-              <h1 className="score">{final}<span>%</span></h1>
+              {
+                fichecker === true ?
+                <FinalChart
+                  attitude={attitude}
+                  communication2={communication2}
+                  culture2={culture2}
+                  knowledge={knowledge}
+                />
+                : ''
+              }
+              <div className="evaluate-score">
+                <p className="text">final interview rating:</p>
+                <div className="score-content">
+                  <h1 className="score">{final}<span>%</span></h1>
+                  <div className={finalConfirmation === true ? "icon passed" : "icon failed"}>{finalConfirmation === true ? <FaCheck /> : <MdClose />}</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

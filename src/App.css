@@ -527,9 +527,23 @@ select option {
   align-items: center;
 }
 
+.evaluate-right .evaluate-result .evaluate-score {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--white-alpha-25);
+}
+
+.evaluate-right .evaluate-result .score-content {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-top: 10px;
+}
+
 .evaluate-right .evaluate-result .icon {
   display: flex;
-  font-size: 200px;
+  font-size: 50px;
+  margin-right: 20px;
 }
 
 .evaluate-right .evaluate-result .icon.passed {
@@ -542,6 +556,8 @@ select option {
 
 .evaluate-right .evaluate-result .text {
   color: var(--white-alpha-25);
+  text-transform: uppercase;
+  text-align: center;
 }
 
 .evaluate-right .evaluate-result .score {
