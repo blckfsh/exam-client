@@ -3,6 +3,17 @@
 <br>
 <p>NOTE: please run <a href="#">npm install</a> after cloning</p>
 <br>
+<strong>v2.0</strong>&nbsp;<small>October 29, 2021</small>
+<p>Summary:</p>
+<ul>
+  <li>Added Data Validation on Applicant Info</li>
+</ul>
+<p>packages added:</p>
+<ul>
+  <li>react-hook-form</li>
+</ul>
+<br>
+<br>
 <strong>v1.9</strong>&nbsp;<small>October 26, 2021</small>
 <p>Summary:</p>
 <ul>

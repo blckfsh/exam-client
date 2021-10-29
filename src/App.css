@@ -44,6 +44,15 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+/* Error Message Section */
+.error-msg {
+  float: right;
+  margin-left: 20px;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--alizarin)
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;

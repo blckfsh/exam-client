@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useForm, useFormState } from 'react-hook-form'
 import DatePicker from 'react-datepicker'
 import axios from 'axios'
 import moment from 'moment'
@@ -61,20 +62,20 @@ function ApplicantInfo(props) {
   const [status, setStatus] = useState('')
 
   // states: for api-related (Exam Evaluation)
-  const [approach, setApproach] = useState('')
-  const [attention, setAttention] = useState('')
-  const [comprehension, setComprehension] = useState('')
+  const [approach, setApproach] = useState(0)
+  const [attention, setAttention] = useState(0)
+  const [comprehension, setComprehension] = useState(0)
   const [recommendation, setRecommendation] = useState('')
-  const [responsiveness, setResponsiveness] = useState('')
+  const [responsiveness, setResponsiveness] = useState(0)
   const [exam, setExam] = useState(0)
 
   // states: for api-related (Inital Interview)
   const [schedule, setSchedule] = useState('')
-  const [portfolio, setPortfolio] = useState('')
-  const [communication, setCommunication] = useState('')
-  const [experience, setExperience] = useState('')
-  const [coding, setCoding] = useState('')
-  const [culture, setCulture] = useState('')
+  const [portfolio, setPortfolio] = useState(0)
+  const [communication, setCommunication] = useState(0)
+  const [experience, setExperience] = useState(0)
+  const [coding, setCoding] = useState(0)
+  const [culture, setCulture] = useState(0)
   const [pros, setPros] = useState('')
   const [cons, setCons] = useState('')
   const [decline, setDecline] = useState('Availability')
@@ -84,10 +85,10 @@ function ApplicantInfo(props) {
 
   // states: for api-related (Final Interview)
   const [schedule2, setSchedule2] = useState('')
-  const [attitude, setAttitude] = useState('')
-  const [communication2, setCommunication2] = useState('')
-  const [culture2, setCulture2] = useState('')
-  const [knowledge, setKnowledge] = useState('')
+  const [attitude, setAttitude] = useState(0)
+  const [communication2, setCommunication2] = useState(0)
+  const [culture2, setCulture2] = useState(0)
+  const [knowledge, setKnowledge] = useState(0)
   const [decline2, setDecline2] = useState('Availability')
   const [recommendation3, setRecommendation3] = useState('')
   const [final, setFinal] = useState(0)
@@ -96,6 +97,18 @@ function ApplicantInfo(props) {
   // states: for api-related (Logs)
   const [logs, setLogs] = useState([])
   const [content, setContent] = useState('')
+
+  // react-hook-form
+  const { register, handleSubmit, trigger, setValue, formState: { errors }} = useForm()
+
+
+  // default values: exam Evaluation
+  // const examDefaultValues = {
+  //   approach,
+  //   attention,
+  //   comprehension,
+  //   responsiveness
+  // }
 
   // list of decline reasons (Initial Interview)
   const declineReasonArray = [
@@ -162,6 +175,12 @@ function ApplicantInfo(props) {
               setAttention(attention)
               setRecommendation(recommendation)
 
+              setValue('approach', approach)
+              setValue('comprehension', comprehension)
+              setValue('responsiveness', responsiveness)
+              setValue('attention', attention)
+              setValue('recommendation', recommendation)
+
               // computation of exam rating
               let scale = 5 // rating scale
               let rates = [30, 20, 25, 25] // rating by percentage
@@ -207,6 +226,15 @@ function ApplicantInfo(props) {
             setDecline(decline)
             setRecommendation2(recommendation)
 
+            setValue('portfolio', portfolio)
+            setValue('communication', communication)
+            setValue('experience', experience)
+            setValue('coding', coding)
+            setValue('culture', culture)
+            setValue('pros', pros)
+            setValue('cons', cons)
+            setValue('recommendation2', recommendation)
+
             // computation of initial interview rating
             let scale = 5 // rating scale
             let rates = [20, 25, 25, 25, 5] // rating by percentage
@@ -250,6 +278,12 @@ function ApplicantInfo(props) {
             setDecline2(decline)
             setRecommendation3(recommendation)
 
+            setValue('attitude', attitude)
+            setValue('communication2', communication)
+            setValue('culture2', culture)
+            setValue('knowledge', knowledge)
+            setValue('recommendation3', recommendation)
+
             // computation of initial interview rating
             let scale = 5 // rating scale
             let rates = [30, 15, 35, 20] // rating by percentage
@@ -280,7 +314,6 @@ function ApplicantInfo(props) {
     fetch(logs_api + id)
       .then(res => res.json())
       .then(res => {
-        console.log(res)
         setLogs(res)
 
         res.map(log => {
@@ -358,8 +391,9 @@ function ApplicantInfo(props) {
       .catch(error => console.log(error.message))
   }
 
-  const handleExamEvaluation = (event) => {
-    event.preventDefault()
+  const onExamEvaluation = (data) => {
+
+    let { approach, attention, comprehension, recommendation, responsiveness } = data
 
     const exam = {
       applicantId,
@@ -369,6 +403,8 @@ function ApplicantInfo(props) {
       recommendation,
       responsiveness
     }
+
+    // console.log(exam)
 
     if (exchecker === false) {
       axios.post(exams_api, exam)
@@ -388,12 +424,11 @@ function ApplicantInfo(props) {
         .then(res => createLogs('exam'))
         .catch(error => console.log(error.message))
     }
-
-
   }
 
-  const handleInitialInteview = (event) => {
-    event.preventDefault()
+  const onInitialInteview = (data) => {
+
+    let { portfolio, communication, experience, coding, culture, pros, cons, recommendation } = data
 
     const initialInterview = {
       applicantId,
@@ -429,8 +464,9 @@ function ApplicantInfo(props) {
     }
   }
 
-  const handleFinalInterview = (event) => {
-    event.preventDefault()
+  const onFinalInterview = (data) => {
+
+    let { attitude, communication2, culture2, knowledge, recommendation3 } = data
 
     const finalInterview = {
       applicantId,
@@ -442,8 +478,6 @@ function ApplicantInfo(props) {
       decline: decline2,
       recommendation: recommendation3
     }
-
-    console.log(finalInterview)
 
     if (fichecker === false) {
       axios.post(finals_api, finalInterview)
@@ -473,9 +507,10 @@ function ApplicantInfo(props) {
     getLogsById(id)
 
     // check the view logs
-    console.log(viewExamLogs)
-    console.log(viewInitialLogs)
-    console.log(viewFinalLogs)
+    // console.log(viewExamLogs)
+    // console.log(viewInitialLogs)
+    // console.log(viewFinalLogs)
+    // console.log(approach)
 
     // set state applicantId = props.id
     setApplicantId(id)
@@ -573,30 +608,143 @@ function ApplicantInfo(props) {
         </div>
         <div className="evaluation">
           <div className="evaluate-left">
-            <form className="form" onSubmit={(e) => handleExamEvaluation(e)}>
+            <form className="form" onSubmit={handleSubmit(onExamEvaluation)}>
               <div className="form-group">
                 <label>Coding Style/Approach
-                  <input className="form-control" type="text" name="approach" value={approach} onChange={(e) => setApproach(e.target.value)} />
+                  {errors.approach && <span className="error-msg">{errors.approach.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="approach"
+                    defaultValue={approach}
+                    {...register("approach", {
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setApproach(e.target.value)
+                      trigger("approach")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Brief Comprehension
-                  <input className="form-control" type="text" name="comprehension" value={comprehension} onChange={(e) => setComprehension(e.target.value)} />
+                  {errors.comprehension && <span className="error-msg">{errors.comprehension.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="comprehension"
+                    defaultValue={comprehension}
+                    {...register("comprehension", {
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setComprehension(e.target.value)
+                      trigger("comprehension")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Responsiveness
-                  <input className="form-control" type="text" name="responsiveness" value={responsiveness} onChange={(e) => setResponsiveness(e.target.value)} />
+                  {errors.responsiveness && <span className="error-msg">{errors.responsiveness.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="responsiveness"
+                    defaultValue={responsiveness}
+                    {...register("responsiveness", {
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setResponsiveness(e.target.value)
+                      trigger("responsiveness")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Attention To Detail
-                  <input className="form-control" type="text" name="attention" value={attention} onChange={(e) => setAttention(e.target.value)} />
+                  {errors.attention && <span className="error-msg">{errors.attention.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="attention"
+                    defaultValue={attention}
+                    {...register("attention", {
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setAttention(e.target.value)
+                      trigger("attention")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Recommendation
-                  <input className="form-control" type="textarea" name="recommendation" value={recommendation} onChange={(e) => setRecommendation(e.target.value)} />
+                  {errors.recommendation && <span className="error-msg">{errors.recommendation.message}</span>}
+                  <input
+                    className="form-control"
+                    type="textarea"
+                    name="recommendation"
+                    defaultValue={recommendation}
+                    {...register("recommendation", {
+                      required: "Recommendation is required",
+                      maxLength: {
+                        value: 50,
+                        message: "Maximum of 50 characters allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setRecommendation(e.target.value)
+                      trigger("recommendation")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
@@ -682,7 +830,7 @@ function ApplicantInfo(props) {
         </div>
         <div className="evaluation">
           <div className="evaluate-left">
-            <form className="form" onSubmit={(e) => handleInitialInteview(e)}>
+            <form className="form" onSubmit={handleSubmit(onInitialInteview)}>
               <div className="form-group">
                 <label>Schedule
                   <DatePicker className="form-control" name="schedule" selected={schedule} onChange={(date) => setSchedule(date)} />
@@ -690,37 +838,196 @@ function ApplicantInfo(props) {
               </div>
               <div className="form-group">
                 <label>Portfolio Review
-                  <input className="form-control" type="text" name="portfolio" value={portfolio} onChange={(e) => setPortfolio(e.target.value)} />
+                  {errors.portfolio && <span className="error-msg">{errors.portfolio.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="portfolio"
+                    defaultValue={portfolio}
+                    {...register("portfolio", {
+                      required: "Portfolio is required",
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setPortfolio(e.target.value)
+                      trigger("portfolio")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Communication Skills
-                  <input className="form-control" type="text" name="communication" value={communication} onChange={(e) => setCommunication(e.target.value)} />
+                  {errors.communication && <span className="error-msg">{errors.communication.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="communication"
+                    defaultValue={communication}
+                    {...register("communication", {
+                      required: "Communication is required",
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setCommunication(e.target.value)
+                      trigger("communication")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Relevant Experience
-                  <input className="form-control" type="text" name="experience" value={experience} onChange={(e) => setExperience(e.target.value)} />
+                  {errors.experience && <span className="error-msg">{errors.experience.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="experience"
+                    defaultValue={experience}
+                    {...register("experience", {
+                      required: "Experience is required",
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setExperience(e.target.value)
+                      trigger("experience")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Coding Style/Approach
-                  <input className="form-control" type="text" name="coding" value={coding} onChange={(e) => setCoding(e.target.value)} />
+                  {errors.coding && <span className="error-msg">{errors.coding.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="coding"
+                    defaultValue={coding}
+                    {...register("coding", {
+                      required: "Coding Style/Approach is required",
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setCoding(e.target.value)
+                      trigger("coding")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Culture Fit
-                  <input className="form-control" type="text" name="culture" value={culture} onChange={(e) => setCulture(e.target.value)} />
+                  {errors.culture && <span className="error-msg">{errors.culture.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="culture"
+                    defaultValue={culture}
+                    {...register("culture", {
+                      required: "Culture Fit is required",
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setCulture(e.target.value)
+                      trigger("culture")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Pros
-                  <input className="form-control" type="text" name="pros" value={pros} onChange={(e) => setPros(e.target.value)} />
+                  {errors.pros && <span className="error-msg">{errors.pros.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="pros"
+                    defaultValue={pros}
+                    {...register("pros", {
+                      required: "Pros is required",
+                      maxLength: {
+                        value: 20,
+                        message: "Maximum of 20 characters allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setPros(e.target.value)
+                      trigger("pros")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Cons
-                  <input className="form-control" type="text" name="cons" value={cons} onChange={(e) => setCons(e.target.value)} />
+                  {errors.cons && <span className="error-msg">{errors.cons.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="cons"
+                    defaultValue={cons}
+                    {...register("cons", {
+                      required: "Cons is required",
+                      maxLength: {
+                        value: 20,
+                        message: "Maximum of 20 characters allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setCons(e.target.value)
+                      trigger("cons")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
@@ -734,7 +1041,24 @@ function ApplicantInfo(props) {
               </div>
               <div className="form-group">
                 <label>Recommendation
-                  <input className="form-control" type="text" name="recommendation2" value={recommendation2} onChange={(e) => setRecommendation2(e.target.value)} />
+                  {errors.recommendation2 && <span className="error-msg">{errors.recommendation2.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="recommendation2"
+                    defaultValue={recommendation2}
+                    {...register("recommendation2", {
+                      required: "Recommendation is required",
+                      maxLength: {
+                        value: 50,
+                        message: "Maximum of 50 characters allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setRecommendation2(e.target.value)
+                      trigger("recommendation2")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
@@ -820,7 +1144,7 @@ function ApplicantInfo(props) {
         </div>
         <div className="evaluation">
           <div className="evaluate-left">
-            <form className="form" onSubmit={(e) => handleFinalInterview(e)}>
+            <form className="form" onSubmit={handleSubmit(onFinalInterview)}>
               <div className="form-group">
                 <label>Schedule
                   <DatePicker className="form-control" name="schedule2" selected={schedule2} onChange={(date) => setSchedule2(date)} />
@@ -828,22 +1152,122 @@ function ApplicantInfo(props) {
               </div>
               <div className="form-group">
                 <label>Attitude/Motivation
-                  <input className="form-control" type="text" name="attitude" value={attitude} onChange={(e) => setAttitude(e.target.value)} />
+                  {errors.attitude && <span className="error-msg">{errors.attitude.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="attitude"
+                    defaultValue={attitude}
+                    {...register("attitude", {
+                      required: "Attitude/Motivation is required",
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setAttitude(e.target.value)
+                      trigger("attitude")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Communication Skills
-                  <input className="form-control" type="text" name="communication2" value={communication2} onChange={(e) => setCommunication2(e.target.value)} />
+                  {errors.communication2 && <span className="error-msg">{errors.communication2.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="communication2"
+                    defaultValue={communication2}
+                    {...register("communication2", {
+                      required: "Communication is required",
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setCommunication2(e.target.value)
+                      trigger("communication2")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Culture Fit
-                  <input className="form-control" type="text" name="culture2" value={culture2} onChange={(e) => setCulture2(e.target.value)} />
+                  {errors.culture2 && <span className="error-msg">{errors.culture2.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="culture2"
+                    defaultValue={culture2}
+                    {...register("culture2", {
+                      required: "Culture Fit is required",
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setCulture2(e.target.value)
+                      trigger("culture2")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
                 <label>Industry Knowledge
-                  <input className="form-control" type="text" name="knowledge" value={knowledge} onChange={(e) => setKnowledge(e.target.value)} />
+                  {errors.knowledge && <span className="error-msg">{errors.knowledge.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="knowledge"
+                    defaultValue={knowledge}
+                    {...register("knowledge", {
+                      required: "Industry Knowledge is required",
+                      min: {
+                        value: 1,
+                        message: "Minimum Required point is 1",
+                      },
+                      max: {
+                        value: 5,
+                        message: "Maximum Allowed point is 5",
+                      },
+                      pattern: {
+                        value: /^[0-9]*$/,
+                        message: "Only numbers are allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setKnowledge(e.target.value)
+                      trigger("knowledge")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
@@ -857,7 +1281,24 @@ function ApplicantInfo(props) {
               </div>
               <div className="form-group">
                 <label>Recommendation
-                  <input className="form-control" type="text" name="recommendation3" value={recommendation3} onChange={(e) => setRecommendation3(e.target.value)} />
+                  {errors.recommendation3 && <span className="error-msg">{errors.recommendation3.message}</span>}
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="recommendation3"
+                    defaultValue={recommendation3}
+                    {...register("recommendation3", {
+                      required: "Recommendation is required",
+                      maxLength: {
+                        value: 50,
+                        message: "Maximum of 50 characters allowed"
+                      }
+                    })}
+                    onKeyUp={(e) => {
+                      setRecommendation3(e.target.value)
+                      trigger("recommendation3")
+                    }}
+                  />
                 </label>
               </div>
               <div className="form-group">
