@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Line, Doughnut } from 'react-chartjs-2';
+import { Line, Doughnut } from 'react-chartjs-2'
+import { jsPDF } from 'jspdf'
 import moment from 'moment'
 
-import { FaDownload } from "react-icons/fa"
+import { FaDownload } from 'react-icons/fa'
 
 function ApplicantReport(props) {
 
@@ -272,6 +273,54 @@ const options_doughnut = {
   }
 }
 
+const generatePDF = () => {
+  var doc = new jsPDF("landscape")
+
+  var lineCanvas = document.querySelector('#line')
+	var lineCanvasImg = lineCanvas.toDataURL("image/jpeg", 1.0)
+
+	doc.setFontSize(20)
+  doc.setTextColor(100)
+  doc.setFont("helvetica", "bold")
+  doc.text("TOTAL APPLICANTS OF 2021", 150, 20, null, null, "center")
+  doc.setFontSize(12)
+  doc.setTextColor(150)
+  doc.setFont("helvetica", "normal")
+  doc.text("STATISTICS ARE BASED BY MONTH OF THE SAID YEAR", 150, 30, null, null, "center")
+
+  // add chart: (LINE)
+	doc.addImage(lineCanvasImg, 'JPEG', 23, 40, 250, 150)
+
+  // add page
+  doc.addPage()
+
+  let printStatusArray = [inprogress, donescreening, sendexam, passedexam, passedinitial, passedfinal, completed, failed]
+  let printDescriptionArray = ['IN PROGRESS', 'DONE SCREENING', 'SEND EXAM', 'PASSED EXAM', 'PASSED INITIAL', 'PASSED FINAL', 'COMPLETED', 'FAILED']
+
+  let rectCounter = 30
+  let dataCounter = 42
+
+  doc.setFontSize(20)
+  doc.setTextColor(100)
+  doc.setFont("helvetica", "bold")
+  doc.text("Applicant Status", 20, 20)
+
+  for (let x in printDescriptionArray) {
+
+    doc.rect(20, rectCounter, 60, 20)
+    doc.setFontSize(12)
+    doc.text(`${printDescriptionArray[x]}`, 25, dataCounter)
+    doc.rect(80, rectCounter, 40, 20)
+    doc.setFontSize(20)
+    doc.text(`${printStatusArray[x]}`, 100, dataCounter, null, null, "center")
+
+    rectCounter = rectCounter + 20
+    dataCounter = dataCounter + 20
+  }
+
+  // export to PDF
+  doc.save('report.pdf')
+}
 
   useEffect(() => {
     configData4Months()
@@ -291,14 +340,13 @@ const options_doughnut = {
               </select>
             </div>
           </div>
-          <div className="action"><a className="add" onClick={() => console.log('export')}><FaDownload /> download to pdf</a></div>
+          <div className="action"><a className="add" onClick={() => generatePDF()}><FaDownload /> download to pdf</a></div>
         </div>
         <div className="chart-body">
           {
-            option === 0 ? <Line data={data_line} options={options_line} /> :
-            <div className="doughnut"><Doughnut data={data_doughnut} options={options_doughnut} /></div>
+            option === 0 ? <Line id="line" data={data_line} options={options_line} /> :
+            <div className="doughnut"><Doughnut id="donut" data={data_doughnut} options={options_doughnut} /></div>
           }
-
         </div>
     </div>
   )

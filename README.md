@@ -3,6 +3,17 @@
 <br>
 <p>NOTE: please run <a href="#">npm install</a> after cloning</p>
 <br>
+<strong>v2.1</strong>&nbsp;<small>October 31, 2021</small>
+<p>Summary:</p>
+<ul>
+  <li>Export to PDF</li>
+</ul>
+<p>packages added:</p>
+<ul>
+  <li>jspdf</li>
+</ul>
+<br>
+<br>
 <strong>v2.0</strong>&nbsp;<small>October 29, 2021</small>
 <p>Summary:</p>
 <ul>
